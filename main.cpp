@@ -49,9 +49,10 @@ void read_message(int * msg){
 
 void handle_zero_state(){
     while(1){
-        int tmp_msg[PROC_NUM] = {-1};
+        int msg[PROC_NUM] = {-1};
         if(message_buffer.empty()) wait_for_message.lock();
-        read_message(tmp_msg);
+        read_message(msg);
+        printf("%d %d %d %d %d\n", rank, msg[0], msg[1], msg[2], msg[3]);
     }
 }
 
