@@ -16,11 +16,12 @@ mutex wait_for_message;
 
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
-    int * tmp_msg = new int[MAX_MSG_LEN];
+    int * tmp_msg = new int[MAX_MSG_LEN + 1];
     int tag;
 
     MPI_Status status;
     MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+    tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
     message_buffer.push(tmp_msg);
     wait_for_message.unlock();
 }
@@ -41,7 +42,7 @@ void read_message(int * msg){
     int * tmp_msg = message_buffer.front();
     message_buffer.pop();
 
-    for(int i = 0; i < PROC_NUM; i++) msg[i] = tmp_msg[i];
+    for(int i = 0; i <= PROC_NUM; i++) msg[i] = tmp_msg[i];
 
     delete[] tmp_msg;
 }
@@ -49,10 +50,10 @@ void read_message(int * msg){
 
 void handle_zero_state(){
     while(1){
-        int msg[PROC_NUM] = {-1};
+        int msg[PROC_NUM + 1] = {-1};
         if(message_buffer.empty()) wait_for_message.lock();
         read_message(msg);
-        printf("%d %d %d %d %d\n", rank, msg[0], msg[1], msg[2], msg[3]);
+        printf("%d %d %d %d %d\n", msg[4], msg[0], msg[1], msg[2], msg[3]);
     }
 }
 
