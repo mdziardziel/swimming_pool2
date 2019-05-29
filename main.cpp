@@ -78,6 +78,7 @@ int main(int argc, char **argv)
 {
     int rank;
     int state = 0;
+    printf("TEST");
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
