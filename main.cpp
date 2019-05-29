@@ -9,6 +9,7 @@ using namespace std;
 #define PROC_NUM 8 // liczba procesów
 #define MAX_MSG_LEN 4 // maksymalna długość wiadomości
 #define CHANNEL_CAPACITY 3 // pojemność kanału
+#define TAG 100
 
 queue <int*> message_buffer; // stos wiadomości
 
@@ -28,13 +29,13 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
 
 void send_msg(int m0, int m1, int m2, int m3, int send_to){
     int send_msg[] = {m0, m1, m2, m3};
-    MPI_Send(send_msg, MAX_MSG_LEN, MPI_INT, send_to, MPI_ANY_TAG, MPI_COMM_WORLD);
+    MPI_Send(send_msg, MAX_MSG_LEN, MPI_INT, send_to, TAG, MPI_COMM_WORLD);
 }
 
 void send_to_all(int m0, int m1, int m2, int m3, int rank){
     for(int i = 0; i < PROC_NUM; i++) {
         if(i == rank) continue;
-        send_msg(i, m0, m1, m2, m3);
+        send_msg(m0, m1, m2, m3, i);
     }
 }
 
@@ -78,11 +79,10 @@ int main(int argc, char **argv)
 {
     int rank;
     int state = 0;
-    printf("TEST");
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
-
+    printf("START %d\n", rank);
 
     thread msg_th(message_reader); 
 
