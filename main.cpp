@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
     send_to_all(1,2,3,4,rank);
     while(1){
-        switch (state {
+        switch (state) {
             case 0: //sekcja lokalna
                 handle_zero_state();
                 break;
