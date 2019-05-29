@@ -51,6 +51,7 @@ void read_message(int * msg){
 void handle_zero_state(){
     while(1){
         int msg[PROC_NUM + 1] = {-1};
+        printf("hello");
         if(message_buffer.empty()) wait_for_message.lock();
         read_message(msg);
         printf("%d %d %d %d %d\n", msg[4], msg[0], msg[1], msg[2], msg[3]);
@@ -73,14 +74,10 @@ void handle_fourth_state(){
 
 }
 
-
-int get_state(){
-    return 0;
-}
-
 int main(int argc, char **argv)
 {
     int rank;
+    int state = 0;
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
@@ -92,7 +89,7 @@ int main(int argc, char **argv)
 
     send_to_all(1,2,3,4,rank);
     while(1){
-        switch (get_state()) {
+        switch (state {
             case 0: //sekcja lokalna
                 handle_zero_state();
                 break;
