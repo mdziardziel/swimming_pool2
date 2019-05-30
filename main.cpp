@@ -124,29 +124,29 @@ void handle_first_state(){
     send_to_all(1, timer,prev_state,-1);
     Message msg;
     int received_messages = 0;
-    // change_state(2);
-    while(1){
-        // int msg[MAX_MSG_LEN + 1] = {-1};
-        if(message_buffer.empty()) wait_for_message.lock();
-        msg = read_message();
+    change_state(2);
+    // while(1){
+    //     // int msg[MAX_MSG_LEN + 1] = {-1};
+    //     if(message_buffer.empty()) wait_for_message.lock();
+    //     msg = read_message();
 
-        switch(msg.type){
-            case 1:
-                if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
-                    hold_messages.push(msg);
-                } else {
-                    send_msg(0, 0, -1, gender,msg.sender);
-                }
-                break;
-            case 0:
-                received_messages++;
-                if(received_messages == PROC_NUM - 1){
-                    change_state(2);
-                }
-                break;
-        }
+    //     switch(msg.type){
+    //         case 1:
+    //             if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
+    //                 hold_messages.push(msg);
+    //             } else {
+    //                 send_msg(0, 0, -1, gender,msg.sender);
+    //             }
+    //             break;
+    //         case 0:
+    //             received_messages++;
+    //             if(received_messages == PROC_NUM - 1){
+    //                 change_state(2);
+    //             }
+    //             break;
+    //     }
 
-    }
+    // }
 }
 
 void handle_second_state(){
