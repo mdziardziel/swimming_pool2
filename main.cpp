@@ -16,15 +16,17 @@ mutex wait_for_message;
 
 
 void message_reader(int receiver){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
-    int * tmp_msg = new int[MAX_MSG_LEN + 1];
-    int tag;
+    while(1){
+        int * tmp_msg = new int[MAX_MSG_LEN + 1];
+        int tag;
 
-    MPI_Status status;
-    MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
-    message_buffer.push(tmp_msg);
-    printf("odbiorca: %d; nadawca: %d %d %d %d %d\n", receiver, tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
-    wait_for_message.unlock();
+        MPI_Status status;
+        MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
+        message_buffer.push(tmp_msg);
+        printf("odbiorca: %d; nadawca: %d %d %d %d %d\n", receiver, tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
+        wait_for_message.unlock();
+    }
 }
 
 void send_msg(int m0, int m1, int m2, int m3, int send_to){
