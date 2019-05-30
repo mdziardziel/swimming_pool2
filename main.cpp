@@ -56,7 +56,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         Message m = Message(tmp_msg, status.MPI_SOURCE);
 
         message_buffer.push(m);
-        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
+        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
         wait_for_message.unlock();
     }
 }
@@ -133,7 +133,9 @@ void handle_first_state(){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
+                    printf("%d kolejkuje %d", proc_id, msg.sender);
                 } else {
+                    printf("%d odsyła %d", proc_id, msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
@@ -167,7 +169,7 @@ int main(int argc, char **argv)
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank( MPI_COMM_WORLD, &proc_id);
-    printf("START %d\n", proc_id);
+    // printf("START %d\n", proc_id);
 
     timer = proc_id;
 
@@ -180,19 +182,19 @@ int main(int argc, char **argv)
     while(1){
         switch (state) {
             case 0: //sekcja lokalna
-                printf("%d -> sekcja lokalna\n", proc_id);
+                // printf("%d -> sekcja lokalna\n", proc_id);
                 handle_zero_state();
-                printf("%d <- sekcja lokaln\n", proc_id);
+                // printf("%d <- sekcja lokaln\n", proc_id);
                 break;
             case 1: // P1
-                printf("%d -> poczekalnia\n", proc_id);
+                // printf("%d -> poczekalnia\n", proc_id);
                 handle_first_state();
-                printf("%d <- poczekalnia\n", proc_id);
+                // printf("%d <- poczekalnia\n", proc_id);
                 break;
             case 2: // P2
                 printf("%d -> szatnia\n", proc_id);
                 handle_second_state();
-                printf("%d <- szatnia\n", proc_id);
+                // printf("%d <- szatnia\n", proc_id);
                 break;
             case 3: // szatnia
                 handle_third_state();
