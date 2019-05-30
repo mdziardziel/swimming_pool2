@@ -115,9 +115,11 @@ void change_state(int new_state){
 void resend_hold_messages(){
     // printf("lalalala\n");
     // printf("hold mess %d\n", hold_messages.size());
+    Message msg;
     while(!hold_messages.empty()){
         // printf("popoppo\n");
-        send_msg(hold_messages.front());
+        msg = hold_messages.front();
+        send_msg(Message(0, 1, room, gender, msg.sender));
         hold_messages.pop();
     }
 }
@@ -156,7 +158,7 @@ void handle_first_state(){
         switch(msg.type){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
-                    hold_messages.push(Message(0, 1, room, gender, msg.sender));
+                    hold_messages.push(msg);
                     // printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 } else {
                     // printf("%d odsyła %d\n", proc_id, msg.sender);
