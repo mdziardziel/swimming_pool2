@@ -75,7 +75,10 @@ void send_to_all(int m0, int m1, int m2, int m3){
 
 Message read_message(){
     Message m = message_buffer.front();
+                    printf("front %d\n", message_buffer.size());
+
     message_buffer.pop();
+                printf("pop %d\n", message_buffer.size());
 
     return m;
 }
@@ -141,7 +144,6 @@ void handle_first_state(){
                 break;
             case 0:
                 received_messages++;
-                printf("xd %d %d\n", received_messages, message_buffer.size());
                 if(received_messages == 150){
                     // printf("xd %d\n", received_messages);
                     change_state(2);
