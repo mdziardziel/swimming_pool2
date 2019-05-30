@@ -119,6 +119,7 @@ void resend_hold_messages(){
     printf("lalalala\n");
     printf("hold mess %d\n", hold_messages.size());
     while(!hold_messages.empty()){
+        printf("popoppo\n");
         send_msg(hold_messages.front());
         hold_messages.pop();
     }
