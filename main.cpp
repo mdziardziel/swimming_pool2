@@ -46,6 +46,7 @@ int timer = -1;
 int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
+int room;
 
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
@@ -157,7 +158,7 @@ void handle_first_state(){
         switch(msg.type){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
-                    hold_messages.push(msg);
+                    hold_messages.push(Message(0, 1, room, gender, msg.sender));
                     printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 } else {
                     printf("%d odsyła %d\n", proc_id, msg.sender);
