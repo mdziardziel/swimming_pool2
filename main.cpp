@@ -8,7 +8,6 @@ using namespace std;
 
 #define PROC_NUM 8 // liczba procesów
 #define MAX_MSG_LEN 4 // maksymalna długość wiadomości
-#define CHANNEL_CAPACITY 3 // pojemność kanału
 #define TAG 100
 
 queue <int*> message_buffer; // stos wiadomości
@@ -24,6 +23,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
     MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
     message_buffer.push(tmp_msg);
+    printf("%d %d %d %d %d\n", tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]);
     wait_for_message.unlock();
 }
 
@@ -52,10 +52,8 @@ void read_message(int * msg){
 void handle_zero_state(){
     while(1){
         int msg[PROC_NUM + 1] = {-1};
-        printf("hello");
         if(message_buffer.empty()) wait_for_message.lock();
         read_message(msg);
-        printf("%d %d %d %d %d\n", msg[4], msg[0], msg[1], msg[2], msg[3]);
     }
 }
 
@@ -68,10 +66,6 @@ void handle_second_state(){
 }
 
 void handle_third_state(){
-
-}
-
-void handle_fourth_state(){
 
 }
 
@@ -103,13 +97,11 @@ int main(int argc, char **argv)
             case 3: // szatnia
                 handle_third_state();
                 break;
-            case 4: // basen
-                handle_fourth_state();
-                break;
             default:
                 break;
             }
     }
+    
 
     msg_th.join();
 	MPI_Finalize();
