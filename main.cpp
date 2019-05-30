@@ -60,7 +60,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         Message m = Message(tmp_msg, status.MPI_SOURCE);
 
         message_buffer.push(m);
-        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
+        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
         wait_for_message.notify_one();
     }
 }
@@ -84,11 +84,7 @@ void send_to_all(int m0, int m1, int m2, int m3){
 
 Message read_message(){
     Message m = message_buffer.front();
-                    // printf("front %d\n", message_buffer.size());
-
     message_buffer.pop();
-                // printf("pop %d\n", message_buffer.size());
-
     return m;
 }
 
@@ -155,6 +151,7 @@ void handle_first_state(){
         }   
         printf("msg %d\n", message_buffer.size());   
         msg = read_message();
+        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
         switch(msg.type){
             case 1:
