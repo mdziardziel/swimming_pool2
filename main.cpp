@@ -59,7 +59,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         Message m = Message(tmp_msg, status.MPI_SOURCE);
 
         message_buffer.push(m);
-        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
+        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
         wait_for_message.notify_one();
     }
 }
