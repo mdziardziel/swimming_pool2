@@ -128,24 +128,25 @@ void handle_first_state(){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) wait_for_message.lock();
         change_state(2);
-        return;
-        // msg = read_message();
+        
+        msg = read_message();
 
-        // switch(msg.type){
-        //     case 1:
-        //         if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
-        //             hold_messages.push(msg);
-        //         } else {
-        //             send_msg(0, 0, -1, gender,msg.sender);
-        //         }
-        //         break;
-        //     case 0:
-        //         received_messages++;
-        //         if(received_messages == PROC_NUM - 1){
-        //             change_state(2);
-        //         }
-        //         break;
-        // }
+        switch(msg.type){
+            case 1:
+                if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
+                    hold_messages.push(msg);
+                } else {
+                    send_msg(0, 0, -1, gender,msg.sender);
+                }
+                break;
+            case 0:
+                received_messages++;
+                if(received_messages == PROC_NUM - 1){
+                    change_state(2);
+                    return;
+                }
+                break;
+        }
 
     }
 }
