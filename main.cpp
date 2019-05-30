@@ -126,9 +126,7 @@ void handle_first_state(){
     int received_messages = 0;
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
-        if(message_buffer.empty()) wait_for_message.lock();
-        change_state(2);
-        
+        if(message_buffer.empty()) wait_for_message.lock();        
         msg = read_message();
 
         switch(msg.type){
