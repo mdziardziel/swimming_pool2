@@ -116,7 +116,8 @@ void change_state(int new_state){
 }
 
 void resend_hold_messages(){
-    printf("hold mess %d", hold_messages.size());
+    printf("lalalala\n");
+    printf("hold mess %d\n", hold_messages.size());
     while(!hold_messages.empty()){
         send_msg(hold_messages.front());
         hold_messages.pop();
