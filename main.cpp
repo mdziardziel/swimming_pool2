@@ -83,6 +83,9 @@ int main(int argc, char **argv)
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
     send_to_all(1,2,3,4,rank);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
     while(1){
         switch (state) {
             case 0: //sekcja lokalna
