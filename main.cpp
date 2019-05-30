@@ -133,9 +133,9 @@ void handle_first_state(){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
-                    printf("%d kolejkuje %d", proc_id, msg.sender);
+                    printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 } else {
-                    printf("%d odsyła %d", proc_id, msg.sender);
+                    printf("%d odsyła %d\n", proc_id, msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
