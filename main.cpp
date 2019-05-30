@@ -69,6 +69,11 @@ void send_msg(int m0, int m1, int m2, int m3, int send_to){
     MPI_Send(send_msg, MAX_MSG_LEN, MPI_INT, send_to, TAG, MPI_COMM_WORLD);
 }
 
+void send_msg(Message m){
+    int send_msg[] = {m.type, m.m1, m.m2, m.m3};
+    MPI_Send(send_msg, MAX_MSG_LEN, MPI_INT, m.sender, TAG, MPI_COMM_WORLD);
+}
+
 void send_to_all(int m0, int m1, int m2, int m3){
     for(int i = 0; i < PROC_NUM; i++) {
         if(i == proc_id) continue;
@@ -110,6 +115,13 @@ void change_state(int new_state){
     state = new_state;
 }
 
+void resend_hold_messages(){
+    while(!hold_messages.empty()){
+        send_msg(message_buffer.front());
+        message_buffer.pop();
+    }
+}
+
 /**
 msg.type - typ wiadomości
 msgsender - nadawca wiadomości
@@ -143,9 +155,9 @@ void handle_first_state(){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
-                    printf("%d kolejkuje %d\n", proc_id, msg.sender);
+                    // printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 } else {
-                    printf("%d odsyła %d\n", proc_id, msg.sender);
+                    // printf("%d odsyła %d\n", proc_id, msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
@@ -163,6 +175,7 @@ void handle_first_state(){
 }
 
 void handle_second_state(){
+    resend_hold_messages();
     while(1){
         sleep(10000);
     }
