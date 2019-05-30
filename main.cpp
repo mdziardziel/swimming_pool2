@@ -152,9 +152,9 @@ void handle_first_state(){
             // printf("%d locl\n", proc_id);
             unique_lock<mutex> lk(wait_for_message_mutex);
             wait_for_message.wait(lk);
-        }      
+        }   
+        printf("msg %d\n", message_buffer.size());   
         msg = read_message();
-        printf("msg %d\n", message_buffer.size());
 
         switch(msg.type){
             case 1:
