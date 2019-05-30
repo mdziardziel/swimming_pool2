@@ -150,7 +150,7 @@ void handle_first_state(){
 
 void handle_second_state(){
     while(1){
-
+        sleep(10000);
     }
 }
 
@@ -179,14 +179,19 @@ int main(int argc, char **argv)
     while(1){
         switch (state) {
             case 0: //sekcja lokalna
+                printf("%d -> sekcja lokalna", proc_id);
                 handle_zero_state();
+                printf("%d <- sekcja lokalna", proc_id);
                 break;
             case 1: // P1
+                printf("%d -> poczekalnia", proc_id);
                 handle_first_state();
+                printf("%d <- poczekalnia", proc_id);
                 break;
             case 2: // P2
                 printf("%d -> szatnia", proc_id);
                 handle_second_state();
+                printf("%d <- szatnia", proc_id);
                 break;
             case 3: // szatnia
                 handle_third_state();
