@@ -23,7 +23,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
     MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
     message_buffer.push(tmp_msg);
-    printf("%d %d %d %d %d\n", tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]);
+    printf("%d %d %d %d %d\n", tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
     wait_for_message.unlock();
 }
 
