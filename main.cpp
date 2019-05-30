@@ -53,10 +53,10 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         MPI_Status status;
         MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
-        Message message = Message(tmp_msg, status.MPI_SOURCE);
+        Message m = Message(tmp_msg, status.MPI_SOURCE);
 
-        message_buffer.push(message);
-        printf("odbiorca: %d; nadawca: %d %d %d %d %d\n", proc_id, tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
+        message_buffer.push(m);
+        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
         wait_for_message.unlock();
     }
 }
