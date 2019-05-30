@@ -142,6 +142,7 @@ void handle_first_state(){
             case 0:
                 received_messages++;
                 if(received_messages == 20){
+                    printf("xd\n");
                     change_state(2);
                     return;
                 }
