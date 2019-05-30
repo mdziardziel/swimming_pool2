@@ -121,9 +121,10 @@ void handle_zero_state(){
 }
 
 void handle_first_state(){
-    send_to_all(1, timer,-1,-1);
+    send_to_all(1, timer,prev_state,-1);
     Message msg;
     int received_messages = 0;
+    // change_state(2);
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) wait_for_message.lock();
