@@ -130,7 +130,7 @@ void handle_first_state(){
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
-            printf("locl\n");
+            printf("%d locl\n", proc_id);
             wait_for_message.lock();  
         }      
         msg = read_message();
