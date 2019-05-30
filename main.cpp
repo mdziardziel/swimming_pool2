@@ -149,7 +149,7 @@ void handle_first_state(){
             unique_lock<mutex> lk(wait_for_message_mutex);
             wait_for_message.wait(lk);
         }   
-        printf("msg %d\n", message_buffer.size());   
+        // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
         printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
