@@ -149,7 +149,9 @@ void handle_first_state(){
 }
 
 void handle_second_state(){
+    while(1){
 
+    }
 }
 
 void handle_third_state(){
