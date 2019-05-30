@@ -167,7 +167,7 @@ void handle_first_state(){
                 }
                 break;
             case 0:
-                printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
+                // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 // printf("xd %d\n", received_messages);
                 // printf("xx\n");
