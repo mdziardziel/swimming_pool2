@@ -75,10 +75,10 @@ void send_to_all(int m0, int m1, int m2, int m3){
 
 Message read_message(){
     Message m = message_buffer.front();
-                    printf("front %d\n", message_buffer.size());
+                    // printf("front %d\n", message_buffer.size());
 
     message_buffer.pop();
-                printf("pop %d\n", message_buffer.size());
+                // printf("pop %d\n", message_buffer.size());
 
     return m;
 }
@@ -129,7 +129,10 @@ void handle_first_state(){
     int received_messages = 0;
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
-        if(message_buffer.empty()) wait_for_message.lock();        
+        if(message_buffer.empty()) {
+            printf("locl\n");
+            wait_for_message.lock();  
+        }      
         msg = read_message();
 
         switch(msg.type){
