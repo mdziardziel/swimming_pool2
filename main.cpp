@@ -133,7 +133,7 @@ void handle_first_state(){
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
-            printf("%d locl\n", proc_id);
+            // printf("%d locl\n", proc_id);
             unique_lock<mutex> lk(wait_for_message_mutex);
             wait_for_message.wait(lk);
         }      
