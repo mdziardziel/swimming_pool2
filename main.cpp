@@ -15,7 +15,7 @@ queue <int*> message_buffer; // stos wiadomości
 mutex wait_for_message;
 
 
-void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
+void message_reader(int receiver){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
     int * tmp_msg = new int[MAX_MSG_LEN + 1];
     int tag;
 
@@ -23,7 +23,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
     MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     tmp_msg[MAX_MSG_LEN] = status.MPI_SOURCE;
     message_buffer.push(tmp_msg);
-    printf("%d %d %d %d %d\n", tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
+    printf("odbiorca: %d; nadawca: %d %d %d %d %d\n", receiver, tmp_msg[4], tmp_msg[0], tmp_msg[1], tmp_msg[2], tmp_msg[3]); 
     wait_for_message.unlock();
 }
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
     printf("START %d\n", rank);
 
-    thread msg_th(message_reader); 
+    thread msg_th(message_reader, rank); 
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
