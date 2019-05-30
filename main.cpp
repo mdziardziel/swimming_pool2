@@ -141,7 +141,7 @@ void handle_first_state(){
                 break;
             case 0:
                 received_messages++;
-                printf("xd %d\n", received_messages);
+                printf("xd %d %d\n", received_messages, message_buffer.size());
                 if(received_messages == 150){
                     // printf("xd %d\n", received_messages);
                     change_state(2);
