@@ -4,6 +4,7 @@
 #include <queue>
 #include <mutex>
 #include <cstdlib>
+#include <condition_variable>
 
 using namespace std; 
 
@@ -37,7 +38,9 @@ queue <Message> message_buffer; // stos wiadomości
 queue <Message> hold_messages; // stos wiadomości
 
 
-mutex wait_for_message;
+condition_variable wait_for_message;
+mutex wait_for_message_mutex;
+
 int state = 0;
 int timer = -1;
 int proc_id = -1;
@@ -57,7 +60,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
 
         message_buffer.push(m);
         // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
-        wait_for_message.unlock();
+        wait_for_message.notify_one();
     }
 }
 
@@ -131,7 +134,8 @@ void handle_first_state(){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
             printf("%d locl\n", proc_id);
-            wait_for_message.lock();  
+            unique_lock<mutex> lk(wait_for_message_mutex);
+            wait_for_message.wait(lk);
         }      
         msg = read_message();
 
