@@ -151,7 +151,7 @@ void handle_first_state(){
                 break;
             case 0:
                 received_messages++;
-                if(received_messages == 150){
+                if(received_messages == PROC_NUM - 1){
                     // printf("xd %d\n", received_messages);
                     change_state(2);
                     return;
