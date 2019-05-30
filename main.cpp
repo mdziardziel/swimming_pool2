@@ -159,15 +159,16 @@ void handle_first_state(){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(Message(0, 1, room, gender, msg.sender));
-                    printf("%d kolejkuje %d\n", proc_id, msg.sender);
+                    // printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 } else {
-                    printf("%d odsyła %d\n", proc_id, msg.sender);
+                    // printf("%d odsyła %d\n", proc_id, msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
             case 0:
                 received_messages++;
-                printf("xx\n");
+                printf("xd %d\n", received_messages);
+                // printf("xx\n");
                 if(received_messages == PROC_NUM - 1){
                     printf("xd %d\n", received_messages);
                     change_state(2);
