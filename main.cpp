@@ -154,6 +154,7 @@ void handle_first_state(){
             wait_for_message.wait(lk);
         }      
         msg = read_message();
+        printf("msg %d", message_buffer.size());
 
         switch(msg.type){
             case 1:
