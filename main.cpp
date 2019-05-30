@@ -141,7 +141,7 @@ void handle_first_state(){
                 break;
             case 0:
                 received_messages++;
-                if(received_messages == PROC_NUM - 1){
+                if(received_messages == 20){
                     change_state(2);
                     return;
                 }
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 
     thread msg_th(message_reader); 
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
     // send_to_all(1,2,3,4,proc_id);
 
