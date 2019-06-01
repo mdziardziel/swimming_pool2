@@ -53,6 +53,7 @@ int room_men[3] = {0};
 int room_women[3] = {0};
 int room_boxes[3] = {0};
 
+bool waiting_for_room = false;
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
     while(1){
@@ -256,15 +257,18 @@ void handle_first_state(){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
+                        waiting_for_room = true;
                         break;
                     }
 
                     received_messages = 0;
+                    waiting_for_room = false;
                     change_state(2);
                     return;
                 }
                 break;
             case 20:
+                if(!waiting_for_room) break;
                 // odjąć szatnie
                 handle_rooms_2(msg.m1, msg.m2, msg.m3);
 
@@ -276,6 +280,7 @@ void handle_first_state(){
                     }
 
                     received_messages = 0;
+                    waiting_for_room = false;
                     change_state(2);
                     return;
                 }
