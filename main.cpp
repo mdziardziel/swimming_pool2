@@ -65,7 +65,6 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         Message m = Message(tmp_msg, status.MPI_SOURCE);
 
         message_buffer.push(m);
-        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, m.sender, m.type, m.m1, m.m2, m.m3); 
         wait_for_message.notify_one();
     }
 }
@@ -133,7 +132,7 @@ int get_available_room(){
     for(int i  = 0; i < 3; i++){
         if(room_boxes[i] == room_capacity) {
             continue;
-        } else if(room_boxes[i] >= room_capacity){
+        } else if(room_boxes[i] > room_capacity){
             printf("WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!!\n");
         }
 
@@ -213,7 +212,7 @@ void handle_first_state(){
         }   
         // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
-        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
+        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
         switch(msg.type){
             case 1:
