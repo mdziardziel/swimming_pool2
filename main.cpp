@@ -285,12 +285,16 @@ void handle_first_state(){
                     return;
                 }
                 break;
+            case 22:
+                handle_rooms(1, msg.m1, msg.m2);
+                break;
         }
 
     }
 }
 
 void handle_second_state(){
+    send_to_all(22, room, gender, -1);
     resend_hold_messages();
     sleep_and_resend(1, 1000);
     send_to_all(20, -1, room, gender);
