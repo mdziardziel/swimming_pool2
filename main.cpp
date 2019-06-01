@@ -179,6 +179,27 @@ void handle_rooms(int s_in_room, int s_room_nr, int s_gender){
         room_women[s_room_nr]++;
     }
 }
+
+void clean_rooms_info(){
+    for(int i = 0; i < 3; i++){
+        room_boxes[i] = 0;
+        room_men[i] = 0;
+        room_women[i] = 0;
+    }
+}
+
+void handle_rooms_2(int s_in_room, int s_room_nr, int s_gender){
+    if(s_in_room == -1){
+        room_boxes[s_room_nr]--;
+    }
+
+    if(s_gender == 1){
+        room_men[s_room_nr]--;
+    } else if(s_gender == 0){
+        room_women[s_room_nr]--;
+    }
+}
+
 /**
 msg.type - typ wiadomości
 msgsender - nadawca wiadomości
@@ -245,6 +266,7 @@ void handle_first_state(){
                 break;
             case 20:
                 // odjąć szatnie
+                handle_rooms_2(msg.m1, msg.m2, msg.m3);
 
                 if(received_messages == PROC_NUM - 1){
                     // printf("xd %d\n", received_messages);
@@ -265,9 +287,11 @@ void handle_first_state(){
 
 void handle_second_state(){
     resend_hold_messages();
-    while(1){
-        sleep_and_resend(1, 10000);
-    }
+    sleep_and_resend(1, 1000);
+    send_to_all(20, -1, room, gender);
+    room = -1;
+    clean_rooms_info();
+    change_state(0);
 }
 
 void handle_third_state(){
