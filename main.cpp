@@ -170,6 +170,16 @@ void sleep_and_resend(int am_i_in_room, int num){
     }
 }
 
+void handle_rooms(int s_in_room, int s_room_nr, int s_gender){
+    if(s_room_nr == -1) return;
+    room_boxes[s_room_nr]++;
+
+    if(s_gender == 1 && s_in_room == 1){
+        room_men[s_room_nr]++;
+    } else if(s_gender == 0 && s_in_room == 1){
+        room_women[s_room_nr]++;
+    }
+}
 /**
 msg.type - typ wiadomości
 msgsender - nadawca wiadomości
@@ -218,6 +228,7 @@ void handle_first_state(){
             case 0:
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
+                handle_rooms(msg.m1, msg.m2, msg.m3);
                 // printf("xd %d\n", received_messages);
                 // printf("xx\n");
                 if(received_messages == PROC_NUM - 1){
@@ -255,7 +266,7 @@ void handle_first_state(){
 void handle_second_state(){
     //resend_hold_messages();
     while(1){
-        sleep(10000);
+        sleep_and_resend(1, 10000);
     }
 }
 
