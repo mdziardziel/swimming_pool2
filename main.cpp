@@ -57,6 +57,8 @@ int room_boxes[ROOMS_NUM] = {0};
 bool waiting_for_room = false;
 
 int get_zero_message[PROC_NUM] = {-1};
+int received_permition[PROC_NUM] = {-1};
+
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
     while(1){
@@ -234,6 +236,7 @@ void handle_first_state(){
     send_to_all(1, timer,prev_state,-1);
     Message msg;
     int received_messages = 0;
+    int additional_messages = 0;
     while(1){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
@@ -250,9 +253,13 @@ void handle_first_state(){
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
                     // printf("%d kolejkuje %d\n", proc_id, msg.sender);
+                } else if(get_zero_message[msg.sender] == 1) {
+                    additional_messages++;
+                    send_msg(1, timer, prev_state, -1 ,msg.sender);
                 } else {
                     // printf("%d odsyła %d\n", proc_id, msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
+
                 }
                 break;
             case 0:
@@ -263,7 +270,7 @@ void handle_first_state(){
                     // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 // printf("xd %d\n", received_messages);
                 // printf("xx\n");
-                if(received_messages == PROC_NUM - 1){
+                if(received_messages == PROC_NUM + additional_messages - 1){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
@@ -273,6 +280,7 @@ void handle_first_state(){
                     }
 
                     received_messages = 0;
+                    additional_messages = 0;
                     // waiting_for_room = false;
                     change_state(2);
                     return;
@@ -284,7 +292,7 @@ void handle_first_state(){
                 // odjąć szatnie
                 handle_rooms_2(msg.m1, msg.m2, msg.m3);
 
-                if(received_messages == PROC_NUM - 1){
+                if(received_messages == PROC_NUM + additional_messages - 1){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
@@ -292,6 +300,7 @@ void handle_first_state(){
                     }
 
                     received_messages = 0;
+                    additional_messages = 0;
                     waiting_for_room = false;
                     change_state(2);
                     return;
