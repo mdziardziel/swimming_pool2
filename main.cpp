@@ -166,7 +166,7 @@ void sleep_and_resend(int am_i_in_room, int num){
                     send_msg(0, am_i_in_room, room, gender, msg.sender);
                     break;
                 case 21: // odpowiedź na pytanie o timer
-                    send_msg(20, timer, -1, -1, -1);
+                    send_msg(25, timer, -1, -1, -1);
                     break;
             }
         }
@@ -309,9 +309,43 @@ void handle_second_state(){
     send_to_all(22, room, gender, -1);
     resend_hold_messages();
     sleep_and_resend(1, 1000);
+
+    Message msg;
+    int received_messages = 0;
+    int max_timer = 0;
+    bool do_while = true;
+    while(do_while){
+        // int msg[MAX_MSG_LEN + 1] = {-1};
+        if(message_buffer.empty()) {
+            // printf("%d locl\n", proc_id);
+            unique_lock<mutex> lk(wait_for_message_mutex);
+            wait_for_message.wait(lk);
+        }   
+        // printf("msg %d\n", message_buffer.size());   
+        msg = read_message();
+
+            switch(msg.type){
+                case 1: // opowiedź na pytanie o wjeście do szatni
+                    send_msg(0, 1, room, gender, msg.sender);
+                    break;
+                case 21: // odpowiedź na pytanie o timer
+                    send_msg(25, timer, -1, -1, -1);
+                    break;
+                case 25:
+                    received_messages++;
+                    if(msg.m1 > max_timer) max_timer = msg.m1;
+                    if(received_messages == PROC_NUM - 1){
+                        timer = max_timer + proc_id;
+                        do_while = false;
+                        break;
+                    }
+            }
+    }
+
     send_to_all(20, -1, room, gender);
     room = -1;
     clean_rooms_info();
+
     change_state(0);
 }
 
