@@ -255,7 +255,7 @@ void handle_first_state(){
 void handle_second_state(){
     //resend_hold_messages();
     while(1){
-        sleep_and_resend(1, 10000);
+        sleep(10000);
     }
 }
 
