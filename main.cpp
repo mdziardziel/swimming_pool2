@@ -138,6 +138,7 @@ int get_available_room(){
             continue;
         } else if(room_boxes[i] > room_capacity){
             printf("WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!!\n");
+            exit(1234);
         }
 
         if(gender == 1 && room_women[i] > 0 ) continue;
