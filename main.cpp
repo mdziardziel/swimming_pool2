@@ -341,7 +341,7 @@ void handle_second_state(){
                     received_messages++;
                     if(msg.m1 > max_timer) max_timer = msg.m1;
                     if(received_messages == PROC_NUM - 1){
-                        timer = max_timer + proc_id;
+                        timer = max_timer + 1;
                         do_while = false;
                         break;
                     }
