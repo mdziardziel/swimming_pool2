@@ -118,6 +118,7 @@ bool is_my_priority_better(int sender_prev_state, int sender_timer, int sender_p
 void change_state(int new_state){
     prev_state = state;
     state = new_state;
+    printf("%d: STAN %d -> %d, timer: %d\n", proc_id, prev_state, state, timer);
 }
 
 void resend_hold_messages(){
@@ -242,7 +243,7 @@ void handle_first_state(){
         }   
         // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
-        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
+        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
         switch(msg.type){
             case 1:
