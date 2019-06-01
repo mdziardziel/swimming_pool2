@@ -257,18 +257,18 @@ void handle_first_state(){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
-                        waiting_for_room = true;
+                        // waiting_for_room = true;
                         break;
                     }
 
                     received_messages = 0;
-                    waiting_for_room = false;
+                    // waiting_for_room = false;
                     change_state(2);
                     return;
                 }
                 break;
             case 20:
-                if(!waiting_for_room) break;
+                // if(!waiting_for_room) break;
                 // odjąć szatnie
                 handle_rooms_2(msg.m1, msg.m2, msg.m3);
 
