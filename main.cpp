@@ -47,7 +47,7 @@ int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
 int room = -1;
-int room_capacity = 1;
+int room_capacity = 2;
 
 int room_men[3] = {0};
 int room_women[3] = {0};
