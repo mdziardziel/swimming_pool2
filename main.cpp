@@ -55,6 +55,8 @@ int room_boxes[3] = {0};
 
 bool waiting_for_room = false;
 
+int get_zero_message[PROC_NUM] = {-1};
+
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
     while(1){
         int tmp_msg[MAX_MSG_LEN];
@@ -187,6 +189,9 @@ void clean_rooms_info(){
         room_men[i] = 0;
         room_women[i] = 0;
     }
+    for(int i = 0; i < PROC_NUM; i++){
+        get_zero_message[i] = -1;
+    }
 }
 
 void handle_rooms_2(int s_in_room, int s_room_nr, int s_gender){
@@ -249,6 +254,7 @@ void handle_first_state(){
             case 0:
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
+                get_zero_message[msg.sender] = 1;
                 handle_rooms(msg.m1, msg.m2, msg.m3);
                     // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 // printf("xd %d\n", received_messages);
@@ -268,6 +274,7 @@ void handle_first_state(){
                 }
                 break;
             case 20:
+                if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
                 handle_rooms_2(msg.m1, msg.m2, msg.m3);
@@ -286,6 +293,8 @@ void handle_first_state(){
                 }
                 break;
             case 22:
+                if(get_zero_message[msg.sender] != 1) break;
+
                 handle_rooms(1, msg.m1, msg.m2);
                 break;
         }
