@@ -128,8 +128,8 @@ void resend_hold_messages(){
     // printf("hold mess %d\n", hold_messages.size());
     Message msg;
     while(!hold_messages.empty()){
-        // printf("popoppo\n");
         msg = hold_messages.front();
+        printf("%d RESEND TO %d\n", proc_id, msg.sender);
         send_msg(Message(0, 1, room, gender, msg.sender));
         hold_messages.pop();
     }
@@ -252,6 +252,7 @@ void handle_first_state(){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
+                    // 
                     // printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 // } else if(get_zero_message[msg.sender] == 1) {
                 //     // get_zero_message[msg.sender] = 0;
@@ -266,7 +267,7 @@ void handle_first_state(){
                 }
                 break;
             case 0:
-                printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
+                // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 get_zero_message[msg.sender] = 1;
                 handle_rooms(msg.m1, msg.m2, msg.m3);
