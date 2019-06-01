@@ -135,10 +135,34 @@ typy wiadomości:
 
 **/
 
+void sleep_and_resend(int am_i_in_room, int num){
+    int slp = rand()%num;
+    int sleep_inteval = 10;
+    for(int i = 0; i < slp; i=i+sleep_inteval){
+        Message msg;
+        if(!message_buffer.empty()){
+            msg = read_message();
+    
+            switch(msg.type){
+                case 1: // opowiedź na pytanie o wjeście do szatni
+                    send_msg(0, am_i_in_room, room, gender, msg.sender);
+                    break;
+                case 21: // odpowiedź na pytanie o timer
+                    send_msg(20, timer, -1, -1, -1);
+                    break;
+            }
+        }
+
+        this_thread::sleep_for(chrono::milliseconds(sleep_inteval));
+    }
+}
+
 void handle_zero_state(){
-    sleep(1000);
+    sleep_and_resend(0, 1000);
     change_state(1);
 }
+
+
 
 void handle_first_state(){
     send_to_all(1, timer,prev_state,-1);
@@ -184,7 +208,7 @@ void handle_first_state(){
 void handle_second_state(){
     resend_hold_messages();
     while(1){
-        sleep(10000);
+        sleep_and_resend(1, 10000);
     }
 }
 
