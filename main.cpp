@@ -334,9 +334,9 @@ int main(int argc, char **argv)
                 // printf("%d <- poczekalnia\n", proc_id);
                 break;
             case 2: // P2
-                printf("%d -> szatnia\n", proc_id);
+                printf("%d -> szatnia, room : %d\n", proc_id, room);
                 handle_second_state();
-                // printf("%d <- szatnia\n", proc_id);
+                printf("%d -> szatnia, room \n", proc_id);
                 break;
             case 3: // szatnia
                 handle_third_state();
