@@ -11,6 +11,7 @@ using namespace std;
 #define PROC_NUM 4 // liczba procesów
 #define MAX_MSG_LEN 4 // maksymalna długość wiadomości
 #define TAG 100
+#define ROOMS_NUM 1
 
 class Message{
     public:
@@ -47,11 +48,11 @@ int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
 int room = -1;
-int room_capacity = 1;
+int room_capacity = 2;
 
-int room_men[3] = {0};
-int room_women[3] = {0};
-int room_boxes[3] = {0};
+int room_men[ROOMS_NUM] = {0};
+int room_women[ROOMS_NUM] = {0};
+int room_boxes[ROOMS_NUM] = {0};
 
 bool waiting_for_room = false;
 
@@ -132,7 +133,7 @@ void resend_hold_messages(){
 }
 
 int get_available_room(){
-    for(int i  = 0; i < 3; i++){
+    for(int i  = 0; i < ROOMS_NUM; i++){
         printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes[i], room_women[i], room_men[i]);
         if(room_boxes[i] == room_capacity) {
             continue;
@@ -186,7 +187,7 @@ void handle_rooms(int s_in_room, int s_room_nr, int s_gender){
 }
 
 void clean_rooms_info(){
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < ROOMS_NUM; i++){
         room_boxes[i] = 0;
         room_men[i] = 0;
         room_women[i] = 0;
