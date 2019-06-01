@@ -49,9 +49,9 @@ int prev_state = -1;
 int room;
 int room_capacity = 1;
 
-int room_men[3];
-int room_women[3];
-int room_boxes[3];
+int room_men[3] = {0};
+int room_women[3] = {0};
+int room_boxes[3] = {0};
 
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
