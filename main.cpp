@@ -277,7 +277,6 @@ void handle_third_state(){
 int main(int argc, char **argv)
 {
     srand( time( NULL ) );
-    gender = rand()%2;
 
 
 	MPI_Init(&argc, &argv);
@@ -285,6 +284,8 @@ int main(int argc, char **argv)
     // printf("START %d\n", proc_id);
 
     timer = proc_id;
+    gender = proc_id%2;
+
 
     thread msg_th(message_reader); 
 
