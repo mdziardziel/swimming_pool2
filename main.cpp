@@ -317,6 +317,8 @@ void handle_second_state(){
     int received_messages = 0;
     int max_timer = 0;
     bool do_while = true;
+    send_to_all(21, -1, -1, -1);
+
     while(do_while){
         // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
@@ -387,9 +389,9 @@ int main(int argc, char **argv)
                 // printf("%d <- poczekalnia\n", proc_id);
                 break;
             case 2: // P2
-                printf("%d -> szatnia, room : %d\n", proc_id, room);
+                // printf("%d -> szatnia, room : %d\n", proc_id, room);
                 handle_second_state();
-                printf("%d <- szatnia, room : %d\n", proc_id, room);
+                // printf("%d <- szatnia, room : %d\n", proc_id, room);
                 break;
             case 3: // szatnia
                 handle_third_state();
