@@ -253,13 +253,15 @@ void handle_first_state(){
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg);
                     // printf("%d kolejkuje %d\n", proc_id, msg.sender);
-                } else if(get_zero_message[msg.sender] == 1) {
-                    // get_zero_message[msg.sender] = 0;
-                    additional_messages++;
-                    send_msg(1, timer, prev_state, -1 ,msg.sender);
-                    send_msg(0, 0, -1, gender,msg.sender);
+                // } else if(get_zero_message[msg.sender] == 1) {
+                //     // get_zero_message[msg.sender] = 0;
+                //     additional_messages++;
+                //     send_msg(1, timer, prev_state, -1 ,msg.sender);
+                //     send_msg(0, 0, -1, gender,msg.sender);
                 } else {
                     // printf("%d odsyła %d\n", proc_id, msg.sender);
+                                        additional_messages++;
+                    send_msg(1, timer, prev_state, -1 ,msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
