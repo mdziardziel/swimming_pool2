@@ -46,7 +46,7 @@ int timer = -1;
 int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
-int room;
+int room = -1;
 int room_capacity = 1;
 
 int room_men[3] = {0};
