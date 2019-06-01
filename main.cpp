@@ -267,6 +267,7 @@ void handle_first_state(){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
+                        printf("UBIEGAM SIĘ O DOSTĘP\n");
                         // waiting_for_room = true;
                         break;
                     }
@@ -348,11 +349,10 @@ void handle_second_state(){
             }
     }
 
+    change_state(0);
     send_to_all(20, -1, room, gender);
     room = -1;
     clean_rooms_info();
-
-    change_state(0);
 }
 
 void handle_third_state(){
