@@ -8,10 +8,10 @@
 
 using namespace std; 
 
-#define PROC_NUM 4 // liczba procesów
+#define PROC_NUM 8 // liczba procesów
 #define MAX_MSG_LEN 4 // maksymalna długość wiadomości
 #define TAG 100
-#define ROOMS_NUM 1
+#define ROOMS_NUM 2
 
 class Message{
     public:
