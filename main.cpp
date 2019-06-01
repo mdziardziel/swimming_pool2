@@ -141,7 +141,7 @@ int get_available_room(){
         if(room_boxes[i] == room_capacity) {
             continue;
         } else if(room_boxes[i] > room_capacity){
-            printf("WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!!\n");
+            printf("%d WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!!\n", proc_id);
             exit(1234);
         }
 
