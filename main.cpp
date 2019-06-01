@@ -212,7 +212,7 @@ void handle_first_state(){
         }   
         // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
-        printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
+        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
         switch(msg.type){
             case 1:
@@ -228,6 +228,7 @@ void handle_first_state(){
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 handle_rooms(msg.m1, msg.m2, msg.m3);
+                    printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 // printf("xd %d\n", received_messages);
                 // printf("xx\n");
                 if(received_messages == PROC_NUM - 1){
