@@ -47,6 +47,11 @@ int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
 int room;
+int room_capacity = 1;
+
+int room_men[3];
+int room_women[3];
+int room_boxes[3];
 
 
 void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywania do bufora
@@ -124,16 +129,24 @@ void resend_hold_messages(){
     }
 }
 
-/**
-msg.type - typ wiadomości
-msgsender - nadawca wiadomości
+int get_available_room(){
+    for(int i  = 0; i < 3; i++){
+        if(room_boxes[i] == room_capacity) {
+            continue;
+        } else if(room_boxes[i] >= room_capacity){
+            printf("WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!!\n");
+        }
 
-typy wiadomości:
-1 - pytanie stanu 1 o to czy nadawca może wejść do szatni (1, timer, prev_state, -1)
-0 - idpowiedź na pytanie stanu 1, pozwolenie na wejście do szatni 
-    (0, czy_jestem_aktualnie_w_szatni, numer_szatni, płeć)
+        if(gender == 1 && room_women[i] > 0 ) continue;
+        if(gender == 0 && room_men[i] > 0 ) continue;
 
-**/
+        if(room_men[i] > 0 && room_women[i] > 0) printf("KOBIETA I MĘŻCZYZNA W JEDNEJ SZATNI!!11!!\n");
+
+        return i;
+    }
+
+    return -1;
+}
 
 void sleep_and_resend(int am_i_in_room, int num){
     int slp = rand()%num;
@@ -156,6 +169,19 @@ void sleep_and_resend(int am_i_in_room, int num){
         this_thread::sleep_for(chrono::milliseconds(sleep_inteval));
     }
 }
+
+/**
+msg.type - typ wiadomości
+msgsender - nadawca wiadomości
+
+typy wiadomości:
+1 - pytanie stanu 1 o to czy nadawca może wejść do szatni (1, timer, prev_state, -1)
+0 - idpowiedź na pytanie stanu 1, pozwolenie na wejście do szatni 
+    (0, czy_jestem_aktualnie_w_szatni, numer_szatni, płeć)
+
+**/
+
+
 
 void handle_zero_state(){
     sleep_and_resend(0, 1000);
@@ -196,6 +222,27 @@ void handle_first_state(){
                 // printf("xx\n");
                 if(received_messages == PROC_NUM - 1){
                     // printf("xd %d\n", received_messages);
+                    room = get_available_room();
+                    if(room == -1){
+                        break;
+                    }
+
+                    received_messages = 0;
+                    change_state(2);
+                    return;
+                }
+                break;
+            case 20:
+                // odjąć szatnie
+
+                if(received_messages == PROC_NUM - 1){
+                    // printf("xd %d\n", received_messages);
+                    room = get_available_room();
+                    if(room == -1){
+                        break;
+                    }
+
+                    received_messages = 0;
                     change_state(2);
                     return;
                 }
