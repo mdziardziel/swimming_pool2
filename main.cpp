@@ -50,9 +50,9 @@ int prev_state = -1;
 int room = -1;
 int room_capacity = 2;
 
-int room_men[ROOMS_NUM] = {0};
-int room_women[ROOMS_NUM] = {0};
-int room_boxes[ROOMS_NUM] = {0};
+int room_men[PROC_NUM] = {-1};
+int room_women[PROC_NUM] = {-1};
+int room_boxes[PROC_NUM] = {-1};
 
 bool waiting_for_room = false;
 
@@ -136,6 +136,7 @@ void resend_hold_messages(){
 }
 
 int get_available_room(){
+
     for(int i  = 0; i < ROOMS_NUM; i++){
         // printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes[i], room_women[i], room_men[i]);
         if(room_boxes[i] == room_capacity) {
@@ -179,38 +180,40 @@ void sleep_and_resend(int am_i_in_room, int num){
 }
 
 void handle_rooms(int s_in_room, int s_room_nr, int s_gender){
-    if(s_room_nr == -1) return;
-    room_boxes[s_room_nr]++;
+    // if(s_room_nr == -1) return;
+    // room_boxes[s_room_nr]++;
 
-    if(s_gender == 1 && s_in_room == 1){
-        room_men[s_room_nr]++;
-    } else if(s_gender == 0 && s_in_room == 1){
-        room_women[s_room_nr]++;
-    }
+    // if(s_gender == 1 && s_in_room == 1){
+    //     room_men[s_room_nr]++;
+    // } else if(s_gender == 0 && s_in_room == 1){
+    //     room_women[s_room_nr]++;
+    // }
+    int sender = 0;
+    if(s_room_nr >= 0) room_boxes[sender] = s_room_nr;
+    if(gender == 1 && s_in_room == 1) room_men[sender] = s_room_nr;
+    if(gender == 0 && s_in_room == 1) room_women[sender] = s_room_nr;
 }
 
 void clean_rooms_info(){
-    for(int i = 0; i < ROOMS_NUM; i++){
-        room_boxes[i] = 0;
-        room_men[i] = 0;
-        room_women[i] = 0;
-    }
     for(int i = 0; i < PROC_NUM; i++){
         get_zero_message[i] = -1;
+        room_boxes[i] = -1;
+        room_men[i] = -1;
+        room_women[i] = -1;
     }
 }
 
-void handle_rooms_2(int s_in_room, int s_room_nr, int s_gender){
-    if(s_in_room == -1){
-        room_boxes[s_room_nr]--;
-    }
+// void handle_rooms_2(int s_in_room, int s_room_nr, int s_gender){
+//     if(s_in_room == -1){
+//         room_boxes[s_room_nr]--;
+//     }
 
-    if(s_gender == 1){
-        room_men[s_room_nr]--;
-    } else if(s_gender == 0){
-        room_women[s_room_nr]--;
-    }
-}
+//     if(s_gender == 1){
+//         room_men[s_room_nr]--;
+//     } else if(s_gender == 0){
+//         room_women[s_room_nr]--;
+//     }
+// }
 
 /**
 msg.type - typ wiadomości
@@ -294,7 +297,7 @@ void handle_first_state(){
                 if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
-                handle_rooms_2(msg.m1, msg.m2, msg.m3);
+                handle_rooms(msg.m1, msg.m2, msg.m3);
 
                 if(received_messages == PROC_NUM + additional_messages - 1){
                     // printf("xd %d\n", received_messages);
@@ -363,7 +366,7 @@ void handle_second_state(){
     }
 
     change_state(0);
-    send_to_all(20, -1, room, gender);
+    send_to_all(20, 0, room, gender);
     room = -1;
     clean_rooms_info();
 }
