@@ -295,6 +295,9 @@ void handle_first_state(){
                     return;
                 }
                 break;
+            case 21: // odpowiedź na pytanie o timer
+                send_msg(25, timer, -1, -1, -1);
+                break;
             case 22:
                 if(get_zero_message[msg.sender] != 1) break;
 
