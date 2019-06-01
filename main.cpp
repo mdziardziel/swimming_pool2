@@ -167,7 +167,7 @@ void sleep_and_resend(int am_i_in_room, int num){
                     send_msg(0, am_i_in_room, room, gender, msg.sender);
                     break;
                 case 21: // odpowiedź na pytanie o timer
-                    send_msg(25, timer, -1, -1, -1);
+                    send_msg(25, timer, -1, -1, msg.sender);
                     break;
             }
         }
@@ -335,7 +335,7 @@ void handle_second_state(){
                     send_msg(0, 1, room, gender, msg.sender);
                     break;
                 case 21: // odpowiedź na pytanie o timer
-                    send_msg(25, timer, -1, -1, -1);
+                    send_msg(25, timer, -1, -1, msg.sender);
                     break;
                 case 25:
                     received_messages++;
