@@ -267,7 +267,7 @@ void handle_first_state(){
                     // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
-                        printf("UBIEGAM SIĘ O DOSTĘP\n");
+                        printf("%d UBIEGAM SIĘ O DOSTĘP\n", proc_id);
                         // waiting_for_room = true;
                         break;
                     }
