@@ -133,7 +133,7 @@ void resend_hold_messages(){
 
 int get_available_room(){
     for(int i  = 0; i < 3; i++){
-        printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, room_boxes[i], room_women[i], room_men[i]);
+        printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes[i], room_women[i], room_men[i]);
         if(room_boxes[i] == room_capacity) {
             continue;
         } else if(room_boxes[i] > room_capacity){
