@@ -288,8 +288,7 @@ int main(int argc, char **argv)
 
     thread msg_th(message_reader); 
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
+    sleep_and_resend(0, 1000);
     // send_to_all(1,2,3,4,proc_id);
 
     while(1){
