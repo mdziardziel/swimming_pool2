@@ -131,6 +131,7 @@ void resend_hold_messages(){
     while(!hold_messages.empty()){
         msg = hold_messages.front();
         // printf("%d RESEND TO %d\n", proc_id, msg.sender);
+        // sefsfdsf
         send_msg(Message(0, 1, room, gender, msg.sender));
         hold_messages.pop();
     }
