@@ -295,7 +295,7 @@ void handle_first_state(){
 
         switch(msg.type){
             case 1:
-                printf("CASE 1\n");
+                printf("%d CASE 1\n", proc_id);
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg.sender);
                     // 
@@ -313,7 +313,7 @@ void handle_first_state(){
                 }
                 break;
             case 0:
-                            printf("CASE 0\n");
+                            printf("%d CASE 0\n", proc_id);
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 // get_zero_message[msg.sender] = 1;
