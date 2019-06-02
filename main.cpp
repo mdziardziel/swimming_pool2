@@ -36,7 +36,7 @@ class Message{
 };
 
 queue <Message> message_buffer; // stos wiadomości
-queue <Message> hold_messages; // stos wiadomości
+queue <int> hold_messages; // stos wiadomości
 
 
 condition_variable wait_for_message;
@@ -127,12 +127,12 @@ void change_state(int new_state){
 void resend_hold_messages(){
     // printf("lalalala\n");
     // printf("hold mess %d\n", hold_messages.size());
-    Message msg;
+    int msg;
     while(!hold_messages.empty()){
         msg = hold_messages.front();
         // printf("%d RESEND TO %d\n", proc_id, msg.sender);
         // sefsfdsf
-        send_msg(Message(0, 1, room, gender, msg.sender));
+        send_msg(Message(0, 1, room, gender, msg));
         hold_messages.pop();
     }
 }
@@ -300,7 +300,7 @@ void handle_first_state(){
         switch(msg.type){
             case 1:
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
-                    hold_messages.push(msg);
+                    hold_messages.push(msg.sender);
                     // 
                     // printf("%d kolejkuje %d\n", proc_id, msg.sender);
                 // } else if(get_zero_message[msg.sender] == 1) {
