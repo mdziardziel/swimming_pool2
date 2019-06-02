@@ -218,8 +218,8 @@ void handle_rooms(int s_in_room, int s_room_nr, int s_gender, int sender){
 
     if(gender == 0 && s_in_room == 1){
         room_women[sender] = s_room_nr; 
-    }else if(gender == 1 && s_in_room != 1){
-        room_men[sender] = -1;     
+    }else if(gender == 0 && s_in_room != 1){
+        room_women[sender] = -1;     
     }     
     
 }
@@ -327,7 +327,7 @@ void handle_first_state(){
                 if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
-                handle_rooms(msg.m1, msg.m2, msg.m3, msg.sender);
+                handle_rooms(-1, msg.m1, msg.m2, msg.sender);
 
                 if(received_messages == PROC_NUM + additional_messages - 1){
                     // printf("xd %d\n", received_messages);
@@ -398,7 +398,7 @@ void handle_second_state(){
     // if(was_in_pool){
         change_state(0);
         room = -1;
-        send_to_all(20, 0, room, gender);
+        send_to_all(20, room, gender, -1);
         clean_rooms_info();
     // }else{
     //     change_state(3);
