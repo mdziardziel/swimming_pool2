@@ -406,17 +406,16 @@ void handle_second_state(){
                     }
             }
     }
-    
+
+    clean_rooms_info();
     // if(was_in_pool){
         was_in_pool = false;
-        change_state(0);
+        change_state(1);
         room = -1;
         send_to_all(20, room, gender, -1);
-        clean_rooms_info();
     // }else{
     //     change_state(3);
     //     send_to_all(20,room,gender, -1);
-    //     clean_rooms_info();
     // }
 }
 
