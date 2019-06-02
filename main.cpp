@@ -394,16 +394,16 @@ void handle_second_state(){
             }
     }
     
-    if(was_in_pool){
+    // if(was_in_pool){
         change_state(0);
         room = -1;
         send_to_all(20, 0, room, gender);
         clean_rooms_info();
-    }else{
-        change_state(3);
-        send_to_all(20,0,room,gender);
-        clean_rooms_info();
-    }
+    // }else{
+    //     change_state(3);
+    //     send_to_all(20,0,room,gender);
+    //     clean_rooms_info();
+    // }
 }
 
 void handle_third_state(){
