@@ -48,7 +48,7 @@ int proc_id = -1;
 int gender = -1;
 int prev_state = -1;
 int room = -1;
-int room_capacity = 1;
+int room_capacity = 2;
 
 int room_men[PROC_NUM] = {-1};
 int room_women[PROC_NUM] = {-1};
@@ -126,11 +126,7 @@ void change_state(int new_state){
 }
 
 void resend_hold_messages(){
-    // printf("lalalala\n");
-    // printf("hold mess %d\n", hold_messages.size());
     while(!hold_messages.empty()){
-        // printf("%d RESEND TO %d\n", proc_id, msg.sender);
-        // sefsfdsf
         send_msg(Message(0, 1, room, gender, hold_messages.front()));
         hold_messages.pop();
     }
@@ -150,13 +146,7 @@ int get_available_room(){
 
     }
     
-    //if(s_room_nr >= 0) room_boxes[sender] = s_room_nr;                      // Sender ma szafke w szatni s_room_nr 
-    //if(gender == 1 && s_in_room == 1) room_men[sender] = s_room_nr;         // Sender(facet) jest w szatni numer s_room_nr
-    //if(gender == 0 && s_in_room == 1) room_women[sender] = s_room_nr;       // Sender(kobieta) jest w szatni numer s_room_nr
-    
-    
     for(int i = 0; i < PROC_NUM; i++){
-        // printf("ROOM[%d]: boxes %d, men %d, women %d\n", i, room_boxes[i], room_men[i], room_women[i]);
         if(room_boxes[i] != -1) room_boxes1[room_boxes[i]]++;
         if(room_men[i] != -1) room_men1[room_men[i]]++;
         if(room_women[i] != -1) room_women1[room_women[i]]++;
@@ -171,18 +161,12 @@ int get_available_room(){
     // -----
 
     for(int i  = 0; i < ROOMS_NUM; i++){
-        // printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes1[i], room_women1[i], room_men1[i]);
-        if(room_boxes1[i] == room_capacity) {
-            continue;
-        } else if(room_boxes1[i] > room_capacity){
-            printf("%d WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!! w szatni %d\n", proc_id, i);
+        if(room_boxes1[i] >= room_capacity) {
             continue;
         }
 
         if(gender == 1 && room_women1[i] > 0 ) continue;
         if(gender == 0 && room_men1[i] > 0 ) continue;
-
-        if(room_men[i] > 0 && room_women1[i] > 0) printf("KOBIETA I MĘŻCZYZNA W JEDNEJ SZATNI!!11!!\n");
 
         return i;
     }
@@ -213,16 +197,6 @@ void sleep_and_resend(int am_i_in_room, int num){
 }
 
 void handle_rooms(int s_in_room, int s_room_nr, int s_gender, int sender){
-    // if(s_room_nr == -1) return;
-    // room_boxes[s_room_nr]++;
-
-    // if(s_gender == 1 && s_in_room == 1){
-    //     room_men[s_room_nr]++;
-    // } else if(s_gender == 0 && s_in_room == 1){
-    //     room_women[s_room_nr]++;
-    // }
-
-
     room_boxes[sender] = s_room_nr;
 
     if(gender == 1 && s_in_room == 1) {
@@ -241,24 +215,11 @@ void handle_rooms(int s_in_room, int s_room_nr, int s_gender, int sender){
 
 void clean_rooms_info(){
     for(int i = 0; i < PROC_NUM; i++){
-        // get_zero_message[i] = -1;
         room_boxes[i] = -1;
         room_men[i] = -1;
         room_women[i] = -1;
     }
 }
-
-// void handle_rooms_2(int s_in_room, int s_room_nr, int s_gender){
-//     if(s_in_room == -1){
-//         room_boxes[s_room_nr]--;
-//     }
-
-//     if(s_gender == 1){
-//         room_men[s_room_nr]--;
-//     } else if(s_gender == 0){
-//         room_women[s_room_nr]--;
-//     }
-// }
 
 /**
 msg.type - typ wiadomości
@@ -271,14 +232,10 @@ typy wiadomości:
 
 **/
 
-
-
 void handle_zero_state(){
     sleep_and_resend(0, 1000);
     change_state(1);
 }
-
-
 
 void handle_first_state(){
     send_to_all(1, timer,prev_state,-1);
@@ -286,70 +243,41 @@ void handle_first_state(){
     int received_messages = 0;
     int additional_messages = 0;
     while(1){
-        // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
-            // printf("%d locl\n", proc_id);
             unique_lock<mutex> lk(wait_for_message_mutex);
             wait_for_message.wait(lk);
         }   
-        // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
-        // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
 
         switch(msg.type){
             case 1:
-                // printf("%d CASE 1\n", proc_id);
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg.sender);
-                    // 
-                    // printf("%d kolejkuje %d\n", proc_id, msg.sender);
-                // } else if(get_zero_message[msg.sender] == 1) {
-                //     // get_zero_message[msg.sender] = 0;
-                //     additional_messages++;
-                //     send_msg(1, timer, prev_state, -1 ,msg.sender);
-                //     send_msg(0, 0, -1, gender,msg.sender);
                 } else {
-                    // printf("%d odsyła %d\n", proc_id, msg.sender);
-                                        additional_messages++;
+                    additional_messages++;
                     send_msg(1, timer, prev_state, -1 ,msg.sender);
                     send_msg(0, 0, -1, gender,msg.sender);
                 }
                 break;
             case 0:
-                            // printf("%d CASE 0\n", proc_id);
-                // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
-                // get_zero_message[msg.sender] = 1;
-                
                 handle_rooms(msg.m1, msg.m2, msg.m3, msg.sender);
-                    // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
-                // printf("xd %d\n", received_messages);
-                // printf("xx\n");
                 if(received_messages == PROC_NUM + additional_messages - 1){
-                    // printf("xd %d\n", received_messages);
-                    // printf("%d UBIEGAM SIĘ O DOSTĘP\n", proc_id);
                     room = get_available_room();
                     if(room == -1){
-                        // waiting_for_room = true;
                         break;
                     }
 
                     received_messages = 0;
                     additional_messages = 0;
-                    // waiting_for_room = false;
                     change_state(2);
                     return;
                 }
                 break;
             case 20:
-                            // printf("CASE 20\n");
-                // if(get_zero_message[msg.sender] != 1) break;
-                // if(!waiting_for_room) break;
-                // odjąć szatnie
                 handle_rooms(-1, msg.m1, msg.m2, msg.sender);
 
                 if(received_messages == PROC_NUM + additional_messages - 1){
-                    // printf("xd %d\n", received_messages);
                     room = get_available_room();
                     if(room == -1){
                         break;
@@ -363,14 +291,9 @@ void handle_first_state(){
                 }
                 break;
             case 21: // odpowiedź na pytanie o timer
-                            // printf("CASE 21\n");
                 send_msg(25, timer, -1, -1, msg.sender);
                 break;
             case 22:
-                            // printf("CASE 22\n");
-
-                // if(get_zero_message[msg.sender] != 1) break;
-
                 handle_rooms(1, msg.m1, msg.m2, msg.sender);
                 break;
         }
@@ -390,13 +313,10 @@ void handle_second_state(){
     send_to_all(21, -1, -1, -1);
 
     while(do_while){
-        // int msg[MAX_MSG_LEN + 1] = {-1};
         if(message_buffer.empty()) {
-            // printf("%d locl\n", proc_id);
             unique_lock<mutex> lk(wait_for_message_mutex);
             wait_for_message.wait(lk);
         }   
-        // printf("msg %d\n", message_buffer.size());   
         msg = read_message();
 
             switch(msg.type){
@@ -443,7 +363,6 @@ int main(int argc, char **argv)
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank( MPI_COMM_WORLD, &proc_id);
-    // printf("START %d\n", proc_id);
 
     timer = proc_id;
     gender = proc_id%2;
@@ -452,24 +371,17 @@ int main(int argc, char **argv)
     thread msg_th(message_reader); 
 
     sleep_and_resend(0, 1000);
-    // send_to_all(1,2,3,4,proc_id);
 
     while(1){
         switch (state) {
             case 0: //sekcja lokalna
-                // printf("%d -> sekcja lokalna\n", proc_id);
                 handle_zero_state();
-                // printf("%d <- sekcja lokaln\n", proc_id);
                 break;
             case 1: // P1
-                // printf("%d -> poczekalnia\n", proc_id);
                 handle_first_state();
-                // printf("%d <- poczekalnia\n", proc_id);
                 break;
             case 2: // P2
-                // printf("%d -> szatnia, room : %d\n", proc_id, room);
                 handle_second_state();
-                // printf("%d <- szatnia, room : %d\n", proc_id, room);
                 break;
             case 3: // szatnia
                 handle_third_state();
