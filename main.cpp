@@ -303,7 +303,7 @@ void handle_first_state(){
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 get_zero_message[msg.sender] = 1;
-                handle_rooms(msg.m1, msg.m2, msg.m3, msg.sender);
+                // handle_rooms(msg.m1, msg.m2, msg.m3, msg.sender);
                     // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 // printf("xd %d\n", received_messages);
                 // printf("xx\n");
@@ -324,7 +324,7 @@ void handle_first_state(){
                 }
                 break;
             case 20:
-                if(get_zero_message[msg.sender] != 1) break;
+                // if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
                 handle_rooms(-1, msg.m1, msg.m2, msg.sender);
@@ -347,7 +347,7 @@ void handle_first_state(){
                 send_msg(25, timer, -1, -1, msg.sender);
                 break;
             case 22:
-                if(get_zero_message[msg.sender] != 1) break;
+                // if(get_zero_message[msg.sender] != 1) break;
 
                 handle_rooms(1, msg.m1, msg.m2, msg.sender);
                 break;
