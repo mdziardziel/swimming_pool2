@@ -163,7 +163,14 @@ int get_available_room(){
         if(room_women[i] != -1) room_women1[room_women[i]]++;
     }
     
-    
+    // ------ gdy mam już szafkę w szatni
+    if(room != -1){
+        if(gender == 1 && room_women1[room] > 0 ) return -1;
+        if(gender == 0 && room_men1[room] > 0 ) return -1;
+        return room;
+    }
+    // -----
+
     for(int i  = 0; i < ROOMS_NUM; i++){
         // printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes1[i], room_women1[i], room_men1[i]);
         if(room_boxes1[i] == room_capacity) {
@@ -404,20 +411,20 @@ void handle_second_state(){
             }
     }
     
-    // if(was_in_pool){
+    if(was_in_pool){
         change_state(0);
         room = -1;
         send_to_all(20, room, gender, -1);
         clean_rooms_info();
-    // }else{
-    //     change_state(3);
-    //     send_to_all(20,0,room,gender);
-    //     clean_rooms_info();
-    // }
+    }else{
+        change_state(3);
+        send_to_all(20,0,room,gender);
+        clean_rooms_info();
+    }
 }
 
 void handle_third_state(){
-    sleep_and_resend(1,1000);
+    sleep_and_resend(0,1000);
     was_in_pool = true;
     change_state(1);
 }
