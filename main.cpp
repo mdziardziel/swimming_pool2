@@ -105,7 +105,10 @@ void sleep(int num){
 bool is_my_priority_better(int sender_prev_state, int sender_timer, int sender_proc_id){
     if(sender_prev_state == 3 && prev_state != 3){
         return false;
-    } else {
+    }else if(sender_prev_state != 3 && prev_state == 3){
+        return true;
+    }
+    else {
         if(sender_timer > timer){
             return true;
         } else if(sender_timer == timer && sender_proc_id > proc_id){
@@ -295,7 +298,7 @@ void handle_first_state(){
 
         switch(msg.type){
             case 1:
-                printf("%d CASE 1\n", proc_id);
+                // printf("%d CASE 1\n", proc_id);
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg.sender);
                     // 
@@ -313,7 +316,7 @@ void handle_first_state(){
                 }
                 break;
             case 0:
-                            printf("%d CASE 0\n", proc_id);
+                            // printf("%d CASE 0\n", proc_id);
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 // get_zero_message[msg.sender] = 1;
@@ -339,7 +342,7 @@ void handle_first_state(){
                 }
                 break;
             case 20:
-                            printf("CASE 20\n");
+                            // printf("CASE 20\n");
                 // if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
@@ -360,11 +363,11 @@ void handle_first_state(){
                 }
                 break;
             case 21: // odpowiedź na pytanie o timer
-                            printf("CASE 21\n");
+                            // printf("CASE 21\n");
                 send_msg(25, timer, -1, -1, msg.sender);
                 break;
             case 22:
-                            printf("CASE 22\n");
+                            // printf("CASE 22\n");
 
                 // if(get_zero_message[msg.sender] != 1) break;
 
