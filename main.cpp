@@ -69,9 +69,7 @@ void message_reader(){ // służy TYLKO do odbierania wiadomości i przekazywani
         MPI_Status status;
         MPI_Recv(tmp_msg, MAX_MSG_LEN, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
-        Message m = Message(tmp_msg, status.MPI_SOURCE);
-
-        message_buffer.push(m);
+        message_buffer.push(Message(tmp_msg, status.MPI_SOURCE));
         wait_for_message.notify_one();
     }
 }
@@ -127,12 +125,10 @@ void change_state(int new_state){
 void resend_hold_messages(){
     // printf("lalalala\n");
     // printf("hold mess %d\n", hold_messages.size());
-    int msg;
     while(!hold_messages.empty()){
-        msg = hold_messages.front();
         // printf("%d RESEND TO %d\n", proc_id, msg.sender);
         // sefsfdsf
-        send_msg(Message(0, 1, room, gender, msg));
+        send_msg(Message(0, 1, room, gender, hold_messages.front()));
         hold_messages.pop();
     }
 }
