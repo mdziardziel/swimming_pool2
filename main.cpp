@@ -242,7 +242,7 @@ void handle_rooms(int s_in_room, int s_room_nr, int s_gender, int sender){
 
 void clean_rooms_info(){
     for(int i = 0; i < PROC_NUM; i++){
-        get_zero_message[i] = -1;
+        // get_zero_message[i] = -1;
         room_boxes[i] = -1;
         room_men[i] = -1;
         room_women[i] = -1;
@@ -318,7 +318,7 @@ void handle_first_state(){
             case 0:
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
-                get_zero_message[msg.sender] = 1;
+                // get_zero_message[msg.sender] = 1;
                 handle_rooms(msg.m1, msg.m2, msg.m3, msg.sender);
                     // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 // printf("xd %d\n", received_messages);
