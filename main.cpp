@@ -142,6 +142,14 @@ int get_available_room(){
     int room_boxes1[ROOMS_NUM] = {0};
     int room_women1[ROOMS_NUM] = {0};
     int room_men1[ROOMS_NUM] = {0};
+
+
+    for(int i = 0; i < ROOMS_NUM; i++){
+        room_boxes1[i] = 0;
+        room_men1[i] = 0;
+        room_women1[i] = 0;
+
+    }
     
     //if(s_room_nr >= 0) room_boxes[sender] = s_room_nr;                      // Sender ma szafke w szatni s_room_nr 
     //if(gender == 1 && s_in_room == 1) room_men[sender] = s_room_nr;         // Sender(facet) jest w szatni numer s_room_nr
@@ -149,7 +157,7 @@ int get_available_room(){
     
     
     for(int i = 0; i < PROC_NUM; i++){
-        printf("ROOM[%d]: boxes %d, men %d, women %d\n", i, room_boxes[i], room_men[i], room_women[i]);
+        // printf("ROOM[%d]: boxes %d, men %d, women %d\n", i, room_boxes[i], room_men[i], room_women[i]);
         if(room_boxes[i] != -1) room_boxes1[room_boxes[i]]++;
         if(room_men[i] != -1) room_men1[room_men[i]]++;
         if(room_women[i] != -1) room_women1[room_women[i]]++;
@@ -157,12 +165,12 @@ int get_available_room(){
     
     
     for(int i  = 0; i < ROOMS_NUM; i++){
-        printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes1[i], room_women1[i], room_men1[i]);
+        // printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes1[i], room_women1[i], room_men1[i]);
         if(room_boxes1[i] == room_capacity) {
             continue;
         } else if(room_boxes1[i] > room_capacity){
             printf("%d WIĘCEJ ZAJĘTYCH SZAFEK NIŻ DOSTĘPNYCH!!111!1!! w szatni %d\n", proc_id, i);
-            exit(1234);
+            continue;
         }
 
         if(gender == 1 && room_women1[i] > 0 ) continue;
