@@ -295,7 +295,7 @@ void handle_first_state(){
 
         switch(msg.type){
             case 1:
-                // printf("CASE 1\n");
+                printf("CASE 1\n");
                 if(is_my_priority_better(msg.m2, msg.m1, msg.sender)){
                     hold_messages.push(msg.sender);
                     // 
@@ -313,7 +313,7 @@ void handle_first_state(){
                 }
                 break;
             case 0:
-                            // printf("CASE 0\n");
+                            printf("CASE 0\n");
                 // printf("odbiorca: %d; nadawca: %d; typ: %d %d %d %d\n", proc_id, msg.sender, msg.type, msg.m1, msg.m2, msg.m3); 
                 received_messages++;
                 // get_zero_message[msg.sender] = 1;
@@ -339,7 +339,7 @@ void handle_first_state(){
                 }
                 break;
             case 20:
-                            // printf("CASE 20\n");
+                            printf("CASE 20\n");
                 // if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
@@ -360,11 +360,11 @@ void handle_first_state(){
                 }
                 break;
             case 21: // odpowiedź na pytanie o timer
-                            // printf("CASE 21\n");
+                            printf("CASE 21\n");
                 send_msg(25, timer, -1, -1, msg.sender);
                 break;
             case 22:
-                            // printf("CASE 22\n");
+                            printf("CASE 22\n");
 
                 // if(get_zero_message[msg.sender] != 1) break;
 
