@@ -415,7 +415,7 @@ void handle_second_state(){
         clean_rooms_info();
     }else{
         change_state(3);
-        send_to_all(20,0,room,gender);
+        send_to_all(20,room,gender, -1);
         clean_rooms_info();
     }
 }
