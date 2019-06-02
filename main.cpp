@@ -413,7 +413,7 @@ void handle_second_state(){
         was_in_pool = false;
         change_state(1);
         // room = -1;
-        send_to_all(20, -1, gender, -1);
+        send_to_all(20, room, gender, -1);
     // }else{
     //     change_state(3);
     //     send_to_all(20,room,gender, -1);
