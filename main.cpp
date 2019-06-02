@@ -156,7 +156,7 @@ int get_available_room(){
     
     
     for(int i  = 0; i < ROOMS_NUM; i++){
-        printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes[i], room_women[i], room_men[i]);
+        printf("%d: SZTATNIA: %d, szafek zajętych: %d, kobiet: %d, mężczyzn %d\n", timer, i, room_boxes1[i], room_women1[i], room_men1[i]);
         if(room_boxes1[i] == room_capacity) {
             continue;
         } else if(room_boxes1[i] > room_capacity){
