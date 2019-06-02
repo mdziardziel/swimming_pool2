@@ -339,7 +339,7 @@ void handle_first_state(){
                 }
                 break;
             case 20:
-                            printf("CASE 20\n");
+                            // printf("CASE 20\n");
                 // if(get_zero_message[msg.sender] != 1) break;
                 // if(!waiting_for_room) break;
                 // odjąć szatnie
@@ -360,11 +360,11 @@ void handle_first_state(){
                 }
                 break;
             case 21: // odpowiedź na pytanie o timer
-                            printf("CASE 21\n");
+                            // printf("CASE 21\n");
                 send_msg(25, timer, -1, -1, msg.sender);
                 break;
             case 22:
-                            printf("CASE 22\n");
+                            // printf("CASE 22\n");
 
                 // if(get_zero_message[msg.sender] != 1) break;
 
