@@ -312,34 +312,33 @@ void handle_second_state(){
     bool do_while = true;
     send_to_all(21, -1, -1, -1);
 
+    while(do_while){
+        if(message_buffer.empty()) {
+            unique_lock<mutex> lk(wait_for_message_mutex);
+            wait_for_message.wait(lk);
+        }   
+        msg = read_message();
+
+            switch(msg.type){
+                case 1: // opowiedź na pytanie o wjeście do szatni
+                    send_msg(0, 1, room, gender, msg.sender);
+                    break;
+                case 21: // odpowiedź na pytanie o timer
+                    send_msg(25, timer, -1, -1, msg.sender);
+                    break;
+                case 25:
+                    received_messages++;
+                    if(msg.m1 > max_timer) max_timer = msg.m1;
+                    if(received_messages == PROC_NUM - 1){
+                        timer = max_timer + 1;
+                        do_while = false;
+                        break;
+                    }
+            }
+    }
+
     clean_rooms_info();
     if(was_in_pool){
-
-        while(do_while){
-            if(message_buffer.empty()) {
-                unique_lock<mutex> lk(wait_for_message_mutex);
-                wait_for_message.wait(lk);
-            }   
-            msg = read_message();
-
-                switch(msg.type){
-                    case 1: // opowiedź na pytanie o wjeście do szatni
-                        send_msg(0, 1, room, gender, msg.sender);
-                        break;
-                    case 21: // odpowiedź na pytanie o timer
-                        send_msg(25, timer, -1, -1, msg.sender);
-                        break;
-                    case 25:
-                        received_messages++;
-                        if(msg.m1 > max_timer) max_timer = msg.m1;
-                        if(received_messages == PROC_NUM - 1){
-                            timer = max_timer + 1;
-                            do_while = false;
-                            break;
-                        }
-                }
-        }
-
         was_in_pool = false;
         change_state(0);
         room = -1;
